@@ -14,12 +14,12 @@ int run_monty(FILE *script_fd);
  */
 void free_tokens(void)
 {
-	size_t i = 1;
+	size_t i = 0;
 
 	if (op_toks == NULL)
 		return;
 
-	for (i = 1; op_toks[i]; i++)
+	for (i = 0; op_toks[i]; i++)
 		free(op_toks[i]);
 
 	free(op_toks);
@@ -115,6 +115,7 @@ int run_monty(FILE *script_fd)
 	unsigned int line_number = 0, prev_tok_len = 0;
 	void (*op_func)(stack_t**, unsigned int);
 
+
 	if (init_stack(&stack) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 
@@ -129,7 +130,7 @@ int run_monty(FILE *script_fd)
 			free_stack(&stack);
 			return (malloc_error());
 		}
-		else if (op_toks[0][0] == '#')
+		else if (op_toks[0][0] == '#') /* comment line */
 		{
 			free_tokens();
 			continue;
@@ -156,7 +157,6 @@ int run_monty(FILE *script_fd)
 		free_tokens();
 	}
 	free_stack(&stack);
-
 
 	if (line && *line == 0)
 	{
